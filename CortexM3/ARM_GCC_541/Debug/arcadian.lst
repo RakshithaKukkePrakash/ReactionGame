@@ -1,0 +1,1608 @@
+ARM GAS  C:\Users\acer\AppData\Local\Temp\cclHZkaZ.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"arcadian.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.glower,"ax",%progbits
+  20              		.align	2
+  21              		.global	glower
+  22              		.thumb
+  23              		.thumb_func
+  24              		.type	glower, %function
+  25              	glower:
+  26              	.LFB111:
+  27              		.file 1 "source\\asw\\arcadian.c"
+   1:source\asw/arcadian.c **** /* ========================================
+   2:source\asw/arcadian.c ****  *
+   3:source\asw/arcadian.c ****  * Copyright YOUR COMPANY, THE YEAR
+   4:source\asw/arcadian.c ****  * All Rights Reserved
+   5:source\asw/arcadian.c ****  * UNPUBLISHED, LICENSED SOFTWARE.
+   6:source\asw/arcadian.c ****  *
+   7:source\asw/arcadian.c ****  * CONFIDENTIAL AND PROPRIETARY INFORMATION
+   8:source\asw/arcadian.c ****  * WHICH IS THE PROPERTY OF your company.
+   9:source\asw/arcadian.c ****  *
+  10:source\asw/arcadian.c ****  * ========================================
+  11:source\asw/arcadian.c **** */
+  12:source\asw/arcadian.c **** #include "arcadian.h"
+  13:source\asw/arcadian.c **** 
+  14:source\asw/arcadian.c **** /**
+  15:source\asw/arcadian.c **** * Function Glower that changes intensity of red, green and blue LEDs
+  16:source\asw/arcadian.c **** * which glows and fades at required intervals mentioned in the glow table
+  17:source\asw/arcadian.c **** */
+  18:source\asw/arcadian.c **** void glower(){
+  28              		.loc 1 18 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32 0000 38B5     		push	{r3, r4, r5, lr}
+  33              		.cfi_def_cfa_offset 16
+  34              		.cfi_offset 3, -16
+  35              		.cfi_offset 4, -12
+  36              		.cfi_offset 5, -8
+  37              		.cfi_offset 14, -4
+  19:source\asw/arcadian.c ****     static  uint8_t glow = 0;
+  20:source\asw/arcadian.c **** 
+ARM GAS  C:\Users\acer\AppData\Local\Temp\cclHZkaZ.s 			page 2
+
+
+  21:source\asw/arcadian.c ****     if(glow<sizeof(RG_glowtable_1) / sizeof(RG__Glow_t)){
+  38              		.loc 1 21 0
+  39 0002 0D4B     		ldr	r3, .L5
+  40 0004 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+  41 0006 082B     		cmp	r3, #8
+  42 0008 12D8     		bhi	.L2
+  43              	.LBB2:
+  22:source\asw/arcadian.c ****     int redValue = RG_glowtable_1[glow].intensity_red;
+  44              		.loc 1 22 0
+  45 000a 0C4C     		ldr	r4, .L5+4
+  46 000c 5A00     		lsls	r2, r3, #1
+  47 000e D118     		adds	r1, r2, r3
+  48 0010 4800     		lsls	r0, r1, #1
+  49 0012 2118     		adds	r1, r4, r0
+  50              	.LVL0:
+  23:source\asw/arcadian.c ****     int greenValue = RG_glowtable_1[glow].intensity_green;
+  24:source\asw/arcadian.c ****     int blueValue = RG_glowtable_1[glow].intensity_blue;
+  25:source\asw/arcadian.c ****     int timeInMS = RG_glowtable_1[glow].timeInMS;
+  51              		.loc 1 25 0
+  52 0014 8D88     		ldrh	r5, [r1, #4]
+  53              	.LVL1:
+  26:source\asw/arcadian.c ****     LED_RGB_Set(redValue,greenValue,blueValue);
+  54              		.loc 1 26 0
+  55 0016 8A78     		ldrb	r2, [r1, #2]	@ zero_extendqisi2
+  56              	.LVL2:
+  57 0018 4978     		ldrb	r1, [r1, #1]	@ zero_extendqisi2
+  58              	.LVL3:
+  59 001a 205C     		ldrb	r0, [r4, r0]	@ zero_extendqisi2
+  60              	.LVL4:
+  61 001c FFF7FEFF 		bl	LED_RGB_Set
+  62              	.LVL5:
+  27:source\asw/arcadian.c ****     CyDelay(timeInMS);
+  63              		.loc 1 27 0
+  64 0020 2846     		mov	r0, r5
+  65 0022 FFF7FEFF 		bl	CyDelay
+  66              	.LVL6:
+  28:source\asw/arcadian.c ****     glow++;
+  67              		.loc 1 28 0
+  68 0026 044A     		ldr	r2, .L5
+  69 0028 1378     		ldrb	r3, [r2]	@ zero_extendqisi2
+  70 002a 0133     		adds	r3, r3, #1
+  71 002c 1370     		strb	r3, [r2]
+  72              	.LBE2:
+  73 002e 38BD     		pop	{r3, r4, r5, pc}
+  74              	.LVL7:
+  75              	.L2:
+  29:source\asw/arcadian.c ****     }
+  30:source\asw/arcadian.c ****     else{  
+  31:source\asw/arcadian.c ****     glow =0;
+  76              		.loc 1 31 0
+  77 0030 0022     		movs	r2, #0
+  78 0032 014B     		ldr	r3, .L5
+  79 0034 1A70     		strb	r2, [r3]
+  80 0036 38BD     		pop	{r3, r4, r5, pc}
+  81              	.L6:
+  82              		.align	2
+  83              	.L5:
+ARM GAS  C:\Users\acer\AppData\Local\Temp\cclHZkaZ.s 			page 3
+
+
+  84 0038 00000000 		.word	.LANCHOR0
+  85 003c 00000000 		.word	.LANCHOR1
+  86              		.cfi_endproc
+  87              	.LFE111:
+  88              		.size	glower, .-glower
+  89              		.section	.text.fader,"ax",%progbits
+  90              		.align	2
+  91              		.global	fader
+  92              		.thumb
+  93              		.thumb_func
+  94              		.type	fader, %function
+  95              	fader:
+  96              	.LFB112:
+  32:source\asw/arcadian.c ****     }
+  33:source\asw/arcadian.c **** }
+  34:source\asw/arcadian.c **** 
+  35:source\asw/arcadian.c **** /**
+  36:source\asw/arcadian.c **** * Function Fader that changes intensity of red, yellow and green LED
+  37:source\asw/arcadian.c **** * which glows and fades at required intervals 
+  38:source\asw/arcadian.c **** */
+  39:source\asw/arcadian.c **** void fader(){
+  97              		.loc 1 39 0
+  98              		.cfi_startproc
+  99              		@ args = 0, pretend = 0, frame = 0
+ 100              		@ frame_needed = 0, uses_anonymous_args = 0
+ 101 0000 10B5     		push	{r4, lr}
+ 102              		.cfi_def_cfa_offset 8
+ 103              		.cfi_offset 4, -8
+ 104              		.cfi_offset 14, -4
+  40:source\asw/arcadian.c ****     static int i = 0;
+  41:source\asw/arcadian.c ****     static int j = 0;
+  42:source\asw/arcadian.c ****     static int k = 0;
+  43:source\asw/arcadian.c ****     static int state = 0;
+  44:source\asw/arcadian.c ****     switch (state) {
+ 105              		.loc 1 44 0
+ 106 0002 234B     		ldr	r3, .L13
+ 107 0004 5B68     		ldr	r3, [r3, #4]
+ 108 0006 012B     		cmp	r3, #1
+ 109 0008 18D0     		beq	.L9
+ 110 000a 022B     		cmp	r3, #2
+ 111 000c 2BD0     		beq	.L10
+ 112 000e 002B     		cmp	r3, #0
+ 113 0010 3CD1     		bne	.L7
+  45:source\asw/arcadian.c ****     case 0:
+  46:source\asw/arcadian.c ****         PWM_Red_WriteCompare(i);
+ 114              		.loc 1 46 0
+ 115 0012 1F4C     		ldr	r4, .L13
+ 116 0014 207A     		ldrb	r0, [r4, #8]	@ zero_extendqisi2
+ 117 0016 FFF7FEFF 		bl	PWM_Red_WriteCompare
+ 118              	.LVL8:
+  47:source\asw/arcadian.c ****         PWM_Green_WriteCompare(255 - i);
+ 119              		.loc 1 47 0
+ 120 001a A068     		ldr	r0, [r4, #8]
+ 121 001c C043     		mvns	r0, r0
+ 122 001e C0B2     		uxtb	r0, r0
+ 123 0020 FFF7FEFF 		bl	PWM_Green_WriteCompare
+ 124              	.LVL9:
+ARM GAS  C:\Users\acer\AppData\Local\Temp\cclHZkaZ.s 			page 4
+
+
+  48:source\asw/arcadian.c ****         i += 15;
+ 125              		.loc 1 48 0
+ 126 0024 A368     		ldr	r3, [r4, #8]
+ 127 0026 0F33     		adds	r3, r3, #15
+ 128 0028 A360     		str	r3, [r4, #8]
+  49:source\asw/arcadian.c **** 
+  50:source\asw/arcadian.c ****         if (PWM_Red_ReadCompare() == 255) {
+ 129              		.loc 1 50 0
+ 130 002a FFF7FEFF 		bl	PWM_Red_ReadCompare
+ 131              	.LVL10:
+ 132 002e FF28     		cmp	r0, #255
+ 133 0030 2CD1     		bne	.L7
+  51:source\asw/arcadian.c ****             state = 1;
+ 134              		.loc 1 51 0
+ 135 0032 0122     		movs	r2, #1
+ 136 0034 6260     		str	r2, [r4, #4]
+  52:source\asw/arcadian.c ****             i = 0;
+ 137              		.loc 1 52 0
+ 138 0036 0022     		movs	r2, #0
+ 139 0038 A260     		str	r2, [r4, #8]
+ 140 003a 10BD     		pop	{r4, pc}
+ 141              	.L9:
+  53:source\asw/arcadian.c ****         }
+  54:source\asw/arcadian.c ****         break;
+  55:source\asw/arcadian.c **** 
+  56:source\asw/arcadian.c ****     case 1:
+  57:source\asw/arcadian.c ****         PWM_Yellow_WriteCompare(j);
+ 142              		.loc 1 57 0
+ 143 003c 144C     		ldr	r4, .L13
+ 144 003e 207B     		ldrb	r0, [r4, #12]	@ zero_extendqisi2
+ 145 0040 FFF7FEFF 		bl	PWM_Yellow_WriteCompare
+ 146              	.LVL11:
+  58:source\asw/arcadian.c ****         PWM_Red_WriteCompare(255 - j);
+ 147              		.loc 1 58 0
+ 148 0044 E068     		ldr	r0, [r4, #12]
+ 149 0046 C043     		mvns	r0, r0
+ 150 0048 C0B2     		uxtb	r0, r0
+ 151 004a FFF7FEFF 		bl	PWM_Red_WriteCompare
+ 152              	.LVL12:
+  59:source\asw/arcadian.c ****         j += 15;
+ 153              		.loc 1 59 0
+ 154 004e E368     		ldr	r3, [r4, #12]
+ 155 0050 0F33     		adds	r3, r3, #15
+ 156 0052 E360     		str	r3, [r4, #12]
+  60:source\asw/arcadian.c **** 
+  61:source\asw/arcadian.c ****         if (PWM_Yellow_ReadCompare() == 255) {
+ 157              		.loc 1 61 0
+ 158 0054 FFF7FEFF 		bl	PWM_Yellow_ReadCompare
+ 159              	.LVL13:
+ 160 0058 FF28     		cmp	r0, #255
+ 161 005a 17D1     		bne	.L7
+  62:source\asw/arcadian.c ****             state = 2;
+ 162              		.loc 1 62 0
+ 163 005c 0222     		movs	r2, #2
+ 164 005e 6260     		str	r2, [r4, #4]
+  63:source\asw/arcadian.c ****             j = 0;
+ 165              		.loc 1 63 0
+ARM GAS  C:\Users\acer\AppData\Local\Temp\cclHZkaZ.s 			page 5
+
+
+ 166 0060 0022     		movs	r2, #0
+ 167 0062 E260     		str	r2, [r4, #12]
+ 168 0064 10BD     		pop	{r4, pc}
+ 169              	.L10:
+  64:source\asw/arcadian.c ****         }
+  65:source\asw/arcadian.c ****         break;
+  66:source\asw/arcadian.c **** 
+  67:source\asw/arcadian.c ****     case 2:
+  68:source\asw/arcadian.c ****         PWM_Green_WriteCompare(k);
+ 170              		.loc 1 68 0
+ 171 0066 0A4C     		ldr	r4, .L13
+ 172 0068 207C     		ldrb	r0, [r4, #16]	@ zero_extendqisi2
+ 173 006a FFF7FEFF 		bl	PWM_Green_WriteCompare
+ 174              	.LVL14:
+  69:source\asw/arcadian.c ****         PWM_Yellow_WriteCompare(255 - k);
+ 175              		.loc 1 69 0
+ 176 006e 2069     		ldr	r0, [r4, #16]
+ 177 0070 C043     		mvns	r0, r0
+ 178 0072 C0B2     		uxtb	r0, r0
+ 179 0074 FFF7FEFF 		bl	PWM_Yellow_WriteCompare
+ 180              	.LVL15:
+  70:source\asw/arcadian.c ****         k += 15;
+ 181              		.loc 1 70 0
+ 182 0078 2369     		ldr	r3, [r4, #16]
+ 183 007a 0F33     		adds	r3, r3, #15
+ 184 007c 2361     		str	r3, [r4, #16]
+  71:source\asw/arcadian.c **** 
+  72:source\asw/arcadian.c ****         if (PWM_Green_ReadCompare() == 255) {
+ 185              		.loc 1 72 0
+ 186 007e FFF7FEFF 		bl	PWM_Green_ReadCompare
+ 187              	.LVL16:
+ 188 0082 FF28     		cmp	r0, #255
+ 189 0084 02D1     		bne	.L7
+  73:source\asw/arcadian.c ****             state = 0;
+ 190              		.loc 1 73 0
+ 191 0086 0022     		movs	r2, #0
+ 192 0088 6260     		str	r2, [r4, #4]
+  74:source\asw/arcadian.c ****             k = 0;
+ 193              		.loc 1 74 0
+ 194 008a 2261     		str	r2, [r4, #16]
+ 195              	.L7:
+ 196 008c 10BD     		pop	{r4, pc}
+ 197              	.L14:
+ 198 008e 00BF     		.align	2
+ 199              	.L13:
+ 200 0090 00000000 		.word	.LANCHOR0
+ 201              		.cfi_endproc
+ 202              	.LFE112:
+ 203              		.size	fader, .-fader
+ 204              		.section	.text.Functsk_arcadian,"ax",%progbits
+ 205              		.align	2
+ 206              		.global	Functsk_arcadian
+ 207              		.thumb
+ 208              		.thumb_func
+ 209              		.type	Functsk_arcadian, %function
+ 210              	Functsk_arcadian:
+ 211              	.LFB113:
+ARM GAS  C:\Users\acer\AppData\Local\Temp\cclHZkaZ.s 			page 6
+
+
+  75:source\asw/arcadian.c ****         }
+  76:source\asw/arcadian.c ****         break;
+  77:source\asw/arcadian.c ****     }
+  78:source\asw/arcadian.c **** }
+  79:source\asw/arcadian.c **** 
+  80:source\asw/arcadian.c **** /*
+  81:source\asw/arcadian.c **** * tsk_arcadian is a basic task with the least priority that produces a
+  82:source\asw/arcadian.c **** * knightrider effect from the fader function and the glower function
+  83:source\asw/arcadian.c **** * produces a pattern of rise and fall of LED brightness on the RGB LED
+  84:source\asw/arcadian.c **** */
+  85:source\asw/arcadian.c **** TASK(tsk_arcadian)
+  86:source\asw/arcadian.c **** {
+ 212              		.loc 1 86 0
+ 213              		.cfi_startproc
+ 214              		@ args = 0, pretend = 0, frame = 0
+ 215              		@ frame_needed = 0, uses_anonymous_args = 0
+ 216 0000 08B5     		push	{r3, lr}
+ 217              		.cfi_def_cfa_offset 8
+ 218              		.cfi_offset 3, -8
+ 219              		.cfi_offset 14, -4
+  87:source\asw/arcadian.c ****     glower();
+ 220              		.loc 1 87 0
+ 221 0002 FFF7FEFF 		bl	glower
+ 222              	.LVL17:
+  88:source\asw/arcadian.c ****     fader();
+ 223              		.loc 1 88 0
+ 224 0006 FFF7FEFF 		bl	fader
+ 225              	.LVL18:
+  89:source\asw/arcadian.c ****     TerminateTask();
+ 226              		.loc 1 89 0
+ 227 000a FFF7FEFF 		bl	EE_oo_TerminateTask
+ 228              	.LVL19:
+ 229 000e 08BD     		pop	{r3, pc}
+ 230              		.cfi_endproc
+ 231              	.LFE113:
+ 232              		.size	Functsk_arcadian, .-Functsk_arcadian
+ 233              		.global	RG_glowtable_1
+ 234              		.section	.rodata
+ 235              		.align	2
+ 236              		.set	.LANCHOR1,. + 0
+ 237              		.type	RG_glowtable_1, %object
+ 238              		.size	RG_glowtable_1, 54
+ 239              	RG_glowtable_1:
+ 240 0000 FF       		.byte	-1
+ 241 0001 00       		.byte	0
+ 242 0002 00       		.byte	0
+ 243 0003 00       		.space	1
+ 244 0004 F401     		.short	500
+ 245 0006 00       		.byte	0
+ 246 0007 FF       		.byte	-1
+ 247 0008 00       		.byte	0
+ 248 0009 00       		.space	1
+ 249 000a F401     		.short	500
+ 250 000c 00       		.byte	0
+ 251 000d 00       		.byte	0
+ 252 000e FF       		.byte	-1
+ 253 000f 00       		.space	1
+ARM GAS  C:\Users\acer\AppData\Local\Temp\cclHZkaZ.s 			page 7
+
+
+ 254 0010 F401     		.short	500
+ 255 0012 00       		.byte	0
+ 256 0013 00       		.byte	0
+ 257 0014 00       		.byte	0
+ 258 0015 00       		.space	1
+ 259 0016 6400     		.short	100
+ 260 0018 FF       		.byte	-1
+ 261 0019 FF       		.byte	-1
+ 262 001a FF       		.byte	-1
+ 263 001b 00       		.space	1
+ 264 001c 6400     		.short	100
+ 265 001e 00       		.byte	0
+ 266 001f 00       		.byte	0
+ 267 0020 00       		.byte	0
+ 268 0021 00       		.space	1
+ 269 0022 6400     		.short	100
+ 270 0024 FF       		.byte	-1
+ 271 0025 FF       		.byte	-1
+ 272 0026 FF       		.byte	-1
+ 273 0027 00       		.space	1
+ 274 0028 6400     		.short	100
+ 275 002a 00       		.byte	0
+ 276 002b 00       		.byte	0
+ 277 002c 00       		.byte	0
+ 278 002d 00       		.space	1
+ 279 002e 6400     		.short	100
+ 280 0030 FF       		.byte	-1
+ 281 0031 FF       		.byte	-1
+ 282 0032 FF       		.byte	-1
+ 283 0033 00       		.space	1
+ 284 0034 6400     		.short	100
+ 285              		.bss
+ 286              		.align	2
+ 287              		.set	.LANCHOR0,. + 0
+ 288              		.type	glow.8874, %object
+ 289              		.size	glow.8874, 1
+ 290              	glow.8874:
+ 291 0000 00       		.space	1
+ 292 0001 000000   		.space	3
+ 293              		.type	state.8884, %object
+ 294              		.size	state.8884, 4
+ 295              	state.8884:
+ 296 0004 00000000 		.space	4
+ 297              		.type	i.8881, %object
+ 298              		.size	i.8881, 4
+ 299              	i.8881:
+ 300 0008 00000000 		.space	4
+ 301              		.type	j.8882, %object
+ 302              		.size	j.8882, 4
+ 303              	j.8882:
+ 304 000c 00000000 		.space	4
+ 305              		.type	k.8883, %object
+ 306              		.size	k.8883, 4
+ 307              	k.8883:
+ 308 0010 00000000 		.space	4
+ 309              		.text
+ 310              	.Letext0:
+ARM GAS  C:\Users\acer\AppData\Local\Temp\cclHZkaZ.s 			page 8
+
+
+ 311              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\4.4\\psoc creator\\import\\gnu\\arm\\5.4.
+ 312              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\4.4\\psoc creator\\import\\gnu\\arm\\5.4.
+ 313              		.file 4 "Generated_Source\\PSoC5/ErikaOS_1_common_ee_types.inc"
+ 314              		.file 5 "Generated_Source\\PSoC5/ErikaOS_1_cortex_mx_ee_cpu.inc"
+ 315              		.file 6 "source\\asw\\arcadian.h"
+ 316              		.file 7 "Generated_Source\\PSoC5/ErikaOS_1_ee_oo_intfunc.inc"
+ 317              		.file 8 "Generated_Source\\PSoC5/ErikaOS_1_cortex_mx_ee_context.inc"
+ 318              		.file 9 "Generated_Source\\PSoC5/ErikaOS_1_common_ee_primitives.inc"
+ 319              		.file 10 "Generated_Source\\PSoC5/core_cm3.h"
+ 320              		.file 11 ".\\source\\bsw\\LabBoard/led.h"
+ 321              		.file 12 "Generated_Source\\PSoC5/CyLib.h"
+ 322              		.file 13 "Generated_Source\\PSoC5/PWM_Red.h"
+ 323              		.file 14 "Generated_Source\\PSoC5/PWM_Green.h"
+ 324              		.file 15 "Generated_Source\\PSoC5/PWM_Yellow.h"
+ 325              		.file 16 "Generated_Source\\PSoC5/ErikaOS_1_ee_oo_kernel.inc"
+ 326              		.section	.debug_info,"",%progbits
+ 327              	.Ldebug_info0:
+ 328 0000 7A030000 		.4byte	0x37a
+ 329 0004 0400     		.2byte	0x4
+ 330 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 331 000a 04       		.byte	0x4
+ 332 000b 01       		.uleb128 0x1
+ 333 000c E0000000 		.4byte	.LASF53
+ 334 0010 0C       		.byte	0xc
+ 335 0011 A5000000 		.4byte	.LASF54
+ 336 0015 5A030000 		.4byte	.LASF55
+ 337 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 338 001d 00000000 		.4byte	0
+ 339 0021 00000000 		.4byte	.Ldebug_line0
+ 340 0025 02       		.uleb128 0x2
+ 341 0026 01       		.byte	0x1
+ 342 0027 06       		.byte	0x6
+ 343 0028 3A030000 		.4byte	.LASF0
+ 344 002c 03       		.uleb128 0x3
+ 345 002d 22000000 		.4byte	.LASF3
+ 346 0031 02       		.byte	0x2
+ 347 0032 1D       		.byte	0x1d
+ 348 0033 37000000 		.4byte	0x37
+ 349 0037 02       		.uleb128 0x2
+ 350 0038 01       		.byte	0x1
+ 351 0039 08       		.byte	0x8
+ 352 003a D2000000 		.4byte	.LASF1
+ 353 003e 02       		.uleb128 0x2
+ 354 003f 02       		.byte	0x2
+ 355 0040 05       		.byte	0x5
+ 356 0041 09030000 		.4byte	.LASF2
+ 357 0045 03       		.uleb128 0x3
+ 358 0046 0A020000 		.4byte	.LASF4
+ 359 004a 02       		.byte	0x2
+ 360 004b 2B       		.byte	0x2b
+ 361 004c 50000000 		.4byte	0x50
+ 362 0050 02       		.uleb128 0x2
+ 363 0051 02       		.byte	0x2
+ 364 0052 07       		.byte	0x7
+ 365 0053 9A010000 		.4byte	.LASF5
+ 366 0057 03       		.uleb128 0x3
+ 367 0058 51000000 		.4byte	.LASF6
+ARM GAS  C:\Users\acer\AppData\Local\Temp\cclHZkaZ.s 			page 9
+
+
+ 368 005c 02       		.byte	0x2
+ 369 005d 3F       		.byte	0x3f
+ 370 005e 62000000 		.4byte	0x62
+ 371 0062 02       		.uleb128 0x2
+ 372 0063 04       		.byte	0x4
+ 373 0064 05       		.byte	0x5
+ 374 0065 25030000 		.4byte	.LASF7
+ 375 0069 02       		.uleb128 0x2
+ 376 006a 04       		.byte	0x4
+ 377 006b 07       		.byte	0x7
+ 378 006c 88010000 		.4byte	.LASF8
+ 379 0070 02       		.uleb128 0x2
+ 380 0071 08       		.byte	0x8
+ 381 0072 05       		.byte	0x5
+ 382 0073 BC020000 		.4byte	.LASF9
+ 383 0077 02       		.uleb128 0x2
+ 384 0078 08       		.byte	0x8
+ 385 0079 07       		.byte	0x7
+ 386 007a BB000000 		.4byte	.LASF10
+ 387 007e 04       		.uleb128 0x4
+ 388 007f 04       		.byte	0x4
+ 389 0080 05       		.byte	0x5
+ 390 0081 696E7400 		.ascii	"int\000"
+ 391 0085 02       		.uleb128 0x2
+ 392 0086 04       		.byte	0x4
+ 393 0087 07       		.byte	0x7
+ 394 0088 49020000 		.4byte	.LASF11
+ 395 008c 02       		.uleb128 0x2
+ 396 008d 08       		.byte	0x8
+ 397 008e 04       		.byte	0x4
+ 398 008f 2E030000 		.4byte	.LASF12
+ 399 0093 02       		.uleb128 0x2
+ 400 0094 04       		.byte	0x4
+ 401 0095 07       		.byte	0x7
+ 402 0096 A7020000 		.4byte	.LASF13
+ 403 009a 02       		.uleb128 0x2
+ 404 009b 01       		.byte	0x1
+ 405 009c 08       		.byte	0x8
+ 406 009d 68020000 		.4byte	.LASF14
+ 407 00a1 03       		.uleb128 0x3
+ 408 00a2 6D020000 		.4byte	.LASF15
+ 409 00a6 03       		.byte	0x3
+ 410 00a7 18       		.byte	0x18
+ 411 00a8 2C000000 		.4byte	0x2c
+ 412 00ac 03       		.uleb128 0x3
+ 413 00ad 13030000 		.4byte	.LASF16
+ 414 00b1 03       		.byte	0x3
+ 415 00b2 24       		.byte	0x24
+ 416 00b3 45000000 		.4byte	0x45
+ 417 00b7 03       		.uleb128 0x3
+ 418 00b8 9F020000 		.4byte	.LASF17
+ 419 00bc 03       		.byte	0x3
+ 420 00bd 2C       		.byte	0x2c
+ 421 00be 57000000 		.4byte	0x57
+ 422 00c2 02       		.uleb128 0x2
+ 423 00c3 04       		.byte	0x4
+ 424 00c4 04       		.byte	0x4
+ARM GAS  C:\Users\acer\AppData\Local\Temp\cclHZkaZ.s 			page 10
+
+
+ 425 00c5 9F000000 		.4byte	.LASF18
+ 426 00c9 02       		.uleb128 0x2
+ 427 00ca 08       		.byte	0x8
+ 428 00cb 04       		.byte	0x4
+ 429 00cc 15020000 		.4byte	.LASF19
+ 430 00d0 03       		.uleb128 0x3
+ 431 00d1 7F010000 		.4byte	.LASF20
+ 432 00d5 04       		.byte	0x4
+ 433 00d6 53       		.byte	0x53
+ 434 00d7 7E000000 		.4byte	0x7e
+ 435 00db 03       		.uleb128 0x3
+ 436 00dc 5E020000 		.4byte	.LASF21
+ 437 00e0 04       		.byte	0x4
+ 438 00e1 54       		.byte	0x54
+ 439 00e2 85000000 		.4byte	0x85
+ 440 00e6 03       		.uleb128 0x3
+ 441 00e7 DE020000 		.4byte	.LASF22
+ 442 00eb 05       		.byte	0x5
+ 443 00ec 4D       		.byte	0x4d
+ 444 00ed DB000000 		.4byte	0xdb
+ 445 00f1 03       		.uleb128 0x3
+ 446 00f2 56020000 		.4byte	.LASF23
+ 447 00f6 05       		.byte	0x5
+ 448 00f7 4F       		.byte	0x4f
+ 449 00f8 DB000000 		.4byte	0xdb
+ 450 00fc 03       		.uleb128 0x3
+ 451 00fd 93000000 		.4byte	.LASF24
+ 452 0101 05       		.byte	0x5
+ 453 0102 78       		.byte	0x78
+ 454 0103 D0000000 		.4byte	0xd0
+ 455 0107 05       		.uleb128 0x5
+ 456 0108 06       		.byte	0x6
+ 457 0109 06       		.byte	0x6
+ 458 010a 11       		.byte	0x11
+ 459 010b 40010000 		.4byte	0x140
+ 460 010f 06       		.uleb128 0x6
+ 461 0110 FB020000 		.4byte	.LASF25
+ 462 0114 06       		.byte	0x6
+ 463 0115 12       		.byte	0x12
+ 464 0116 A1000000 		.4byte	0xa1
+ 465 011a 00       		.byte	0
+ 466 011b 06       		.uleb128 0x6
+ 467 011c 41000000 		.4byte	.LASF26
+ 468 0120 06       		.byte	0x6
+ 469 0121 13       		.byte	0x13
+ 470 0122 A1000000 		.4byte	0xa1
+ 471 0126 01       		.byte	0x1
+ 472 0127 06       		.uleb128 0x6
+ 473 0128 7E000000 		.4byte	.LASF27
+ 474 012c 06       		.byte	0x6
+ 475 012d 14       		.byte	0x14
+ 476 012e A1000000 		.4byte	0xa1
+ 477 0132 02       		.byte	0x2
+ 478 0133 06       		.uleb128 0x6
+ 479 0134 1C030000 		.4byte	.LASF28
+ 480 0138 06       		.byte	0x6
+ 481 0139 15       		.byte	0x15
+ARM GAS  C:\Users\acer\AppData\Local\Temp\cclHZkaZ.s 			page 11
+
+
+ 482 013a AC000000 		.4byte	0xac
+ 483 013e 04       		.byte	0x4
+ 484 013f 00       		.byte	0
+ 485 0140 03       		.uleb128 0x3
+ 486 0141 95030000 		.4byte	.LASF29
+ 487 0145 06       		.byte	0x6
+ 488 0146 16       		.byte	0x16
+ 489 0147 07010000 		.4byte	0x107
+ 490 014b 07       		.uleb128 0x7
+ 491 014c A8030000 		.4byte	.LASF34
+ 492 0150 01       		.byte	0x1
+ 493 0151 12       		.byte	0x12
+ 494 0152 00000000 		.4byte	.LFB111
+ 495 0156 40000000 		.4byte	.LFE111-.LFB111
+ 496 015a 01       		.uleb128 0x1
+ 497 015b 9C       		.byte	0x9c
+ 498 015c D1010000 		.4byte	0x1d1
+ 499 0160 08       		.uleb128 0x8
+ 500 0161 9A000000 		.4byte	.LASF30
+ 501 0165 01       		.byte	0x1
+ 502 0166 13       		.byte	0x13
+ 503 0167 A1000000 		.4byte	0xa1
+ 504 016b 05       		.uleb128 0x5
+ 505 016c 03       		.byte	0x3
+ 506 016d 00000000 		.4byte	glow.8874
+ 507 0171 09       		.uleb128 0x9
+ 508 0172 0A000000 		.4byte	.LBB2
+ 509 0176 24000000 		.4byte	.LBE2-.LBB2
+ 510 017a 0A       		.uleb128 0xa
+ 511 017b 19000000 		.4byte	.LASF31
+ 512 017f 01       		.byte	0x1
+ 513 0180 16       		.byte	0x16
+ 514 0181 7E000000 		.4byte	0x7e
+ 515 0185 00000000 		.4byte	.LLST0
+ 516 0189 0A       		.uleb128 0xa
+ 517 018a EA010000 		.4byte	.LASF32
+ 518 018e 01       		.byte	0x1
+ 519 018f 17       		.byte	0x17
+ 520 0190 7E000000 		.4byte	0x7e
+ 521 0194 3A000000 		.4byte	.LLST1
+ 522 0198 0A       		.uleb128 0xa
+ 523 0199 5B000000 		.4byte	.LASF33
+ 524 019d 01       		.byte	0x1
+ 525 019e 18       		.byte	0x18
+ 526 019f 7E000000 		.4byte	0x7e
+ 527 01a3 5F000000 		.4byte	.LLST2
+ 528 01a7 0A       		.uleb128 0xa
+ 529 01a8 1C030000 		.4byte	.LASF28
+ 530 01ac 01       		.byte	0x1
+ 531 01ad 19       		.byte	0x19
+ 532 01ae 7E000000 		.4byte	0x7e
+ 533 01b2 84000000 		.4byte	.LLST3
+ 534 01b6 0B       		.uleb128 0xb
+ 535 01b7 20000000 		.4byte	.LVL5
+ 536 01bb 1A030000 		.4byte	0x31a
+ 537 01bf 0C       		.uleb128 0xc
+ 538 01c0 26000000 		.4byte	.LVL6
+ARM GAS  C:\Users\acer\AppData\Local\Temp\cclHZkaZ.s 			page 12
+
+
+ 539 01c4 25030000 		.4byte	0x325
+ 540 01c8 0D       		.uleb128 0xd
+ 541 01c9 01       		.uleb128 0x1
+ 542 01ca 50       		.byte	0x50
+ 543 01cb 02       		.uleb128 0x2
+ 544 01cc 75       		.byte	0x75
+ 545 01cd 00       		.sleb128 0
+ 546 01ce 00       		.byte	0
+ 547 01cf 00       		.byte	0
+ 548 01d0 00       		.byte	0
+ 549 01d1 07       		.uleb128 0x7
+ 550 01d2 8D000000 		.4byte	.LASF35
+ 551 01d6 01       		.byte	0x1
+ 552 01d7 27       		.byte	0x27
+ 553 01d8 00000000 		.4byte	.LFB112
+ 554 01dc 94000000 		.4byte	.LFE112-.LFB112
+ 555 01e0 01       		.uleb128 0x1
+ 556 01e1 9C       		.byte	0x9c
+ 557 01e2 76020000 		.4byte	0x276
+ 558 01e6 0E       		.uleb128 0xe
+ 559 01e7 6900     		.ascii	"i\000"
+ 560 01e9 01       		.byte	0x1
+ 561 01ea 28       		.byte	0x28
+ 562 01eb 7E000000 		.4byte	0x7e
+ 563 01ef 05       		.uleb128 0x5
+ 564 01f0 03       		.byte	0x3
+ 565 01f1 08000000 		.4byte	i.8881
+ 566 01f5 0E       		.uleb128 0xe
+ 567 01f6 6A00     		.ascii	"j\000"
+ 568 01f8 01       		.byte	0x1
+ 569 01f9 29       		.byte	0x29
+ 570 01fa 7E000000 		.4byte	0x7e
+ 571 01fe 05       		.uleb128 0x5
+ 572 01ff 03       		.byte	0x3
+ 573 0200 0C000000 		.4byte	j.8882
+ 574 0204 0E       		.uleb128 0xe
+ 575 0205 6B00     		.ascii	"k\000"
+ 576 0207 01       		.byte	0x1
+ 577 0208 2A       		.byte	0x2a
+ 578 0209 7E000000 		.4byte	0x7e
+ 579 020d 05       		.uleb128 0x5
+ 580 020e 03       		.byte	0x3
+ 581 020f 10000000 		.4byte	k.8883
+ 582 0213 08       		.uleb128 0x8
+ 583 0214 3B000000 		.4byte	.LASF36
+ 584 0218 01       		.byte	0x1
+ 585 0219 2B       		.byte	0x2b
+ 586 021a 7E000000 		.4byte	0x7e
+ 587 021e 05       		.uleb128 0x5
+ 588 021f 03       		.byte	0x3
+ 589 0220 04000000 		.4byte	state.8884
+ 590 0224 0B       		.uleb128 0xb
+ 591 0225 1A000000 		.4byte	.LVL8
+ 592 0229 30030000 		.4byte	0x330
+ 593 022d 0B       		.uleb128 0xb
+ 594 022e 24000000 		.4byte	.LVL9
+ 595 0232 3B030000 		.4byte	0x33b
+ARM GAS  C:\Users\acer\AppData\Local\Temp\cclHZkaZ.s 			page 13
+
+
+ 596 0236 0B       		.uleb128 0xb
+ 597 0237 2E000000 		.4byte	.LVL10
+ 598 023b 46030000 		.4byte	0x346
+ 599 023f 0B       		.uleb128 0xb
+ 600 0240 44000000 		.4byte	.LVL11
+ 601 0244 51030000 		.4byte	0x351
+ 602 0248 0B       		.uleb128 0xb
+ 603 0249 4E000000 		.4byte	.LVL12
+ 604 024d 30030000 		.4byte	0x330
+ 605 0251 0B       		.uleb128 0xb
+ 606 0252 58000000 		.4byte	.LVL13
+ 607 0256 5C030000 		.4byte	0x35c
+ 608 025a 0B       		.uleb128 0xb
+ 609 025b 6E000000 		.4byte	.LVL14
+ 610 025f 3B030000 		.4byte	0x33b
+ 611 0263 0B       		.uleb128 0xb
+ 612 0264 78000000 		.4byte	.LVL15
+ 613 0268 51030000 		.4byte	0x351
+ 614 026c 0B       		.uleb128 0xb
+ 615 026d 82000000 		.4byte	.LVL16
+ 616 0271 67030000 		.4byte	0x367
+ 617 0275 00       		.byte	0
+ 618 0276 0F       		.uleb128 0xf
+ 619 0277 6E010000 		.4byte	.LASF56
+ 620 027b 01       		.byte	0x1
+ 621 027c 55       		.byte	0x55
+ 622 027d 00000000 		.4byte	.LFB113
+ 623 0281 10000000 		.4byte	.LFE113-.LFB113
+ 624 0285 01       		.uleb128 0x1
+ 625 0286 9C       		.byte	0x9c
+ 626 0287 A7020000 		.4byte	0x2a7
+ 627 028b 0B       		.uleb128 0xb
+ 628 028c 06000000 		.4byte	.LVL17
+ 629 0290 4B010000 		.4byte	0x14b
+ 630 0294 0B       		.uleb128 0xb
+ 631 0295 0A000000 		.4byte	.LVL18
+ 632 0299 D1010000 		.4byte	0x1d1
+ 633 029d 0B       		.uleb128 0xb
+ 634 029e 0E000000 		.4byte	.LVL19
+ 635 02a2 72030000 		.4byte	0x372
+ 636 02a6 00       		.byte	0
+ 637 02a7 10       		.uleb128 0x10
+ 638 02a8 AD010000 		.4byte	.LASF37
+ 639 02ac 07       		.byte	0x7
+ 640 02ad 40       		.byte	0x40
+ 641 02ae E6000000 		.4byte	0xe6
+ 642 02b2 10       		.uleb128 0x10
+ 643 02b3 65000000 		.4byte	.LASF38
+ 644 02b7 07       		.byte	0x7
+ 645 02b8 47       		.byte	0x47
+ 646 02b9 F1000000 		.4byte	0xf1
+ 647 02bd 10       		.uleb128 0x10
+ 648 02be 75020000 		.4byte	.LASF39
+ 649 02c2 07       		.byte	0x7
+ 650 02c3 4A       		.byte	0x4a
+ 651 02c4 E6000000 		.4byte	0xe6
+ 652 02c8 10       		.uleb128 0x10
+ARM GAS  C:\Users\acer\AppData\Local\Temp\cclHZkaZ.s 			page 14
+
+
+ 653 02c9 00000000 		.4byte	.LASF40
+ 654 02cd 08       		.byte	0x8
+ 655 02ce 48       		.byte	0x48
+ 656 02cf FC000000 		.4byte	0xfc
+ 657 02d3 10       		.uleb128 0x10
+ 658 02d4 E6020000 		.4byte	.LASF41
+ 659 02d8 09       		.byte	0x9
+ 660 02d9 44       		.byte	0x44
+ 661 02da E6000000 		.4byte	0xe6
+ 662 02de 11       		.uleb128 0x11
+ 663 02df DD010000 		.4byte	.LASF42
+ 664 02e3 0A       		.byte	0xa
+ 665 02e4 1207     		.2byte	0x712
+ 666 02e6 EA020000 		.4byte	0x2ea
+ 667 02ea 12       		.uleb128 0x12
+ 668 02eb B7000000 		.4byte	0xb7
+ 669 02ef 13       		.uleb128 0x13
+ 670 02f0 FF020000 		.4byte	0x2ff
+ 671 02f4 FF020000 		.4byte	0x2ff
+ 672 02f8 14       		.uleb128 0x14
+ 673 02f9 93000000 		.4byte	0x93
+ 674 02fd 08       		.byte	0x8
+ 675 02fe 00       		.byte	0
+ 676 02ff 15       		.uleb128 0x15
+ 677 0300 40010000 		.4byte	0x140
+ 678 0304 16       		.uleb128 0x16
+ 679 0305 2C000000 		.4byte	.LASF43
+ 680 0309 06       		.byte	0x6
+ 681 030a 1D       		.byte	0x1d
+ 682 030b 15030000 		.4byte	0x315
+ 683 030f 05       		.uleb128 0x5
+ 684 0310 03       		.byte	0x3
+ 685 0311 00000000 		.4byte	RG_glowtable_1
+ 686 0315 15       		.uleb128 0x15
+ 687 0316 EF020000 		.4byte	0x2ef
+ 688 031a 17       		.uleb128 0x17
+ 689 031b B0020000 		.4byte	.LASF44
+ 690 031f B0020000 		.4byte	.LASF44
+ 691 0323 0B       		.byte	0xb
+ 692 0324 A5       		.byte	0xa5
+ 693 0325 17       		.uleb128 0x17
+ 694 0326 A0030000 		.4byte	.LASF45
+ 695 032a A0030000 		.4byte	.LASF45
+ 696 032e 0C       		.byte	0xc
+ 697 032f 76       		.byte	0x76
+ 698 0330 17       		.uleb128 0x17
+ 699 0331 F5010000 		.4byte	.LASF46
+ 700 0335 F5010000 		.4byte	.LASF46
+ 701 0339 0D       		.byte	0xd
+ 702 033a C3       		.byte	0xc3
+ 703 033b 17       		.uleb128 0x17
+ 704 033c 1C020000 		.4byte	.LASF47
+ 705 0340 1C020000 		.4byte	.LASF47
+ 706 0344 0E       		.byte	0xe
+ 707 0345 C3       		.byte	0xc3
+ 708 0346 17       		.uleb128 0x17
+ 709 0347 CA020000 		.4byte	.LASF48
+ARM GAS  C:\Users\acer\AppData\Local\Temp\cclHZkaZ.s 			page 15
+
+
+ 710 034b CA020000 		.4byte	.LASF48
+ 711 034f 0D       		.byte	0xd
+ 712 0350 C5       		.byte	0xc5
+ 713 0351 17       		.uleb128 0x17
+ 714 0352 C5010000 		.4byte	.LASF49
+ 715 0356 C5010000 		.4byte	.LASF49
+ 716 035a 0F       		.byte	0xf
+ 717 035b C3       		.byte	0xc3
+ 718 035c 17       		.uleb128 0x17
+ 719 035d 88020000 		.4byte	.LASF50
+ 720 0361 88020000 		.4byte	.LASF50
+ 721 0365 0F       		.byte	0xf
+ 722 0366 C5       		.byte	0xc5
+ 723 0367 17       		.uleb128 0x17
+ 724 0368 33020000 		.4byte	.LASF51
+ 725 036c 33020000 		.4byte	.LASF51
+ 726 0370 0E       		.byte	0xe
+ 727 0371 C5       		.byte	0xc5
+ 728 0372 17       		.uleb128 0x17
+ 729 0373 46030000 		.4byte	.LASF52
+ 730 0377 46030000 		.4byte	.LASF52
+ 731 037b 10       		.byte	0x10
+ 732 037c 9F       		.byte	0x9f
+ 733 037d 00       		.byte	0
+ 734              		.section	.debug_abbrev,"",%progbits
+ 735              	.Ldebug_abbrev0:
+ 736 0000 01       		.uleb128 0x1
+ 737 0001 11       		.uleb128 0x11
+ 738 0002 01       		.byte	0x1
+ 739 0003 25       		.uleb128 0x25
+ 740 0004 0E       		.uleb128 0xe
+ 741 0005 13       		.uleb128 0x13
+ 742 0006 0B       		.uleb128 0xb
+ 743 0007 03       		.uleb128 0x3
+ 744 0008 0E       		.uleb128 0xe
+ 745 0009 1B       		.uleb128 0x1b
+ 746 000a 0E       		.uleb128 0xe
+ 747 000b 55       		.uleb128 0x55
+ 748 000c 17       		.uleb128 0x17
+ 749 000d 11       		.uleb128 0x11
+ 750 000e 01       		.uleb128 0x1
+ 751 000f 10       		.uleb128 0x10
+ 752 0010 17       		.uleb128 0x17
+ 753 0011 00       		.byte	0
+ 754 0012 00       		.byte	0
+ 755 0013 02       		.uleb128 0x2
+ 756 0014 24       		.uleb128 0x24
+ 757 0015 00       		.byte	0
+ 758 0016 0B       		.uleb128 0xb
+ 759 0017 0B       		.uleb128 0xb
+ 760 0018 3E       		.uleb128 0x3e
+ 761 0019 0B       		.uleb128 0xb
+ 762 001a 03       		.uleb128 0x3
+ 763 001b 0E       		.uleb128 0xe
+ 764 001c 00       		.byte	0
+ 765 001d 00       		.byte	0
+ 766 001e 03       		.uleb128 0x3
+ARM GAS  C:\Users\acer\AppData\Local\Temp\cclHZkaZ.s 			page 16
+
+
+ 767 001f 16       		.uleb128 0x16
+ 768 0020 00       		.byte	0
+ 769 0021 03       		.uleb128 0x3
+ 770 0022 0E       		.uleb128 0xe
+ 771 0023 3A       		.uleb128 0x3a
+ 772 0024 0B       		.uleb128 0xb
+ 773 0025 3B       		.uleb128 0x3b
+ 774 0026 0B       		.uleb128 0xb
+ 775 0027 49       		.uleb128 0x49
+ 776 0028 13       		.uleb128 0x13
+ 777 0029 00       		.byte	0
+ 778 002a 00       		.byte	0
+ 779 002b 04       		.uleb128 0x4
+ 780 002c 24       		.uleb128 0x24
+ 781 002d 00       		.byte	0
+ 782 002e 0B       		.uleb128 0xb
+ 783 002f 0B       		.uleb128 0xb
+ 784 0030 3E       		.uleb128 0x3e
+ 785 0031 0B       		.uleb128 0xb
+ 786 0032 03       		.uleb128 0x3
+ 787 0033 08       		.uleb128 0x8
+ 788 0034 00       		.byte	0
+ 789 0035 00       		.byte	0
+ 790 0036 05       		.uleb128 0x5
+ 791 0037 13       		.uleb128 0x13
+ 792 0038 01       		.byte	0x1
+ 793 0039 0B       		.uleb128 0xb
+ 794 003a 0B       		.uleb128 0xb
+ 795 003b 3A       		.uleb128 0x3a
+ 796 003c 0B       		.uleb128 0xb
+ 797 003d 3B       		.uleb128 0x3b
+ 798 003e 0B       		.uleb128 0xb
+ 799 003f 01       		.uleb128 0x1
+ 800 0040 13       		.uleb128 0x13
+ 801 0041 00       		.byte	0
+ 802 0042 00       		.byte	0
+ 803 0043 06       		.uleb128 0x6
+ 804 0044 0D       		.uleb128 0xd
+ 805 0045 00       		.byte	0
+ 806 0046 03       		.uleb128 0x3
+ 807 0047 0E       		.uleb128 0xe
+ 808 0048 3A       		.uleb128 0x3a
+ 809 0049 0B       		.uleb128 0xb
+ 810 004a 3B       		.uleb128 0x3b
+ 811 004b 0B       		.uleb128 0xb
+ 812 004c 49       		.uleb128 0x49
+ 813 004d 13       		.uleb128 0x13
+ 814 004e 38       		.uleb128 0x38
+ 815 004f 0B       		.uleb128 0xb
+ 816 0050 00       		.byte	0
+ 817 0051 00       		.byte	0
+ 818 0052 07       		.uleb128 0x7
+ 819 0053 2E       		.uleb128 0x2e
+ 820 0054 01       		.byte	0x1
+ 821 0055 3F       		.uleb128 0x3f
+ 822 0056 19       		.uleb128 0x19
+ 823 0057 03       		.uleb128 0x3
+ARM GAS  C:\Users\acer\AppData\Local\Temp\cclHZkaZ.s 			page 17
+
+
+ 824 0058 0E       		.uleb128 0xe
+ 825 0059 3A       		.uleb128 0x3a
+ 826 005a 0B       		.uleb128 0xb
+ 827 005b 3B       		.uleb128 0x3b
+ 828 005c 0B       		.uleb128 0xb
+ 829 005d 11       		.uleb128 0x11
+ 830 005e 01       		.uleb128 0x1
+ 831 005f 12       		.uleb128 0x12
+ 832 0060 06       		.uleb128 0x6
+ 833 0061 40       		.uleb128 0x40
+ 834 0062 18       		.uleb128 0x18
+ 835 0063 9742     		.uleb128 0x2117
+ 836 0065 19       		.uleb128 0x19
+ 837 0066 01       		.uleb128 0x1
+ 838 0067 13       		.uleb128 0x13
+ 839 0068 00       		.byte	0
+ 840 0069 00       		.byte	0
+ 841 006a 08       		.uleb128 0x8
+ 842 006b 34       		.uleb128 0x34
+ 843 006c 00       		.byte	0
+ 844 006d 03       		.uleb128 0x3
+ 845 006e 0E       		.uleb128 0xe
+ 846 006f 3A       		.uleb128 0x3a
+ 847 0070 0B       		.uleb128 0xb
+ 848 0071 3B       		.uleb128 0x3b
+ 849 0072 0B       		.uleb128 0xb
+ 850 0073 49       		.uleb128 0x49
+ 851 0074 13       		.uleb128 0x13
+ 852 0075 02       		.uleb128 0x2
+ 853 0076 18       		.uleb128 0x18
+ 854 0077 00       		.byte	0
+ 855 0078 00       		.byte	0
+ 856 0079 09       		.uleb128 0x9
+ 857 007a 0B       		.uleb128 0xb
+ 858 007b 01       		.byte	0x1
+ 859 007c 11       		.uleb128 0x11
+ 860 007d 01       		.uleb128 0x1
+ 861 007e 12       		.uleb128 0x12
+ 862 007f 06       		.uleb128 0x6
+ 863 0080 00       		.byte	0
+ 864 0081 00       		.byte	0
+ 865 0082 0A       		.uleb128 0xa
+ 866 0083 34       		.uleb128 0x34
+ 867 0084 00       		.byte	0
+ 868 0085 03       		.uleb128 0x3
+ 869 0086 0E       		.uleb128 0xe
+ 870 0087 3A       		.uleb128 0x3a
+ 871 0088 0B       		.uleb128 0xb
+ 872 0089 3B       		.uleb128 0x3b
+ 873 008a 0B       		.uleb128 0xb
+ 874 008b 49       		.uleb128 0x49
+ 875 008c 13       		.uleb128 0x13
+ 876 008d 02       		.uleb128 0x2
+ 877 008e 17       		.uleb128 0x17
+ 878 008f 00       		.byte	0
+ 879 0090 00       		.byte	0
+ 880 0091 0B       		.uleb128 0xb
+ARM GAS  C:\Users\acer\AppData\Local\Temp\cclHZkaZ.s 			page 18
+
+
+ 881 0092 898201   		.uleb128 0x4109
+ 882 0095 00       		.byte	0
+ 883 0096 11       		.uleb128 0x11
+ 884 0097 01       		.uleb128 0x1
+ 885 0098 31       		.uleb128 0x31
+ 886 0099 13       		.uleb128 0x13
+ 887 009a 00       		.byte	0
+ 888 009b 00       		.byte	0
+ 889 009c 0C       		.uleb128 0xc
+ 890 009d 898201   		.uleb128 0x4109
+ 891 00a0 01       		.byte	0x1
+ 892 00a1 11       		.uleb128 0x11
+ 893 00a2 01       		.uleb128 0x1
+ 894 00a3 31       		.uleb128 0x31
+ 895 00a4 13       		.uleb128 0x13
+ 896 00a5 00       		.byte	0
+ 897 00a6 00       		.byte	0
+ 898 00a7 0D       		.uleb128 0xd
+ 899 00a8 8A8201   		.uleb128 0x410a
+ 900 00ab 00       		.byte	0
+ 901 00ac 02       		.uleb128 0x2
+ 902 00ad 18       		.uleb128 0x18
+ 903 00ae 9142     		.uleb128 0x2111
+ 904 00b0 18       		.uleb128 0x18
+ 905 00b1 00       		.byte	0
+ 906 00b2 00       		.byte	0
+ 907 00b3 0E       		.uleb128 0xe
+ 908 00b4 34       		.uleb128 0x34
+ 909 00b5 00       		.byte	0
+ 910 00b6 03       		.uleb128 0x3
+ 911 00b7 08       		.uleb128 0x8
+ 912 00b8 3A       		.uleb128 0x3a
+ 913 00b9 0B       		.uleb128 0xb
+ 914 00ba 3B       		.uleb128 0x3b
+ 915 00bb 0B       		.uleb128 0xb
+ 916 00bc 49       		.uleb128 0x49
+ 917 00bd 13       		.uleb128 0x13
+ 918 00be 02       		.uleb128 0x2
+ 919 00bf 18       		.uleb128 0x18
+ 920 00c0 00       		.byte	0
+ 921 00c1 00       		.byte	0
+ 922 00c2 0F       		.uleb128 0xf
+ 923 00c3 2E       		.uleb128 0x2e
+ 924 00c4 01       		.byte	0x1
+ 925 00c5 3F       		.uleb128 0x3f
+ 926 00c6 19       		.uleb128 0x19
+ 927 00c7 03       		.uleb128 0x3
+ 928 00c8 0E       		.uleb128 0xe
+ 929 00c9 3A       		.uleb128 0x3a
+ 930 00ca 0B       		.uleb128 0xb
+ 931 00cb 3B       		.uleb128 0x3b
+ 932 00cc 0B       		.uleb128 0xb
+ 933 00cd 27       		.uleb128 0x27
+ 934 00ce 19       		.uleb128 0x19
+ 935 00cf 11       		.uleb128 0x11
+ 936 00d0 01       		.uleb128 0x1
+ 937 00d1 12       		.uleb128 0x12
+ARM GAS  C:\Users\acer\AppData\Local\Temp\cclHZkaZ.s 			page 19
+
+
+ 938 00d2 06       		.uleb128 0x6
+ 939 00d3 40       		.uleb128 0x40
+ 940 00d4 18       		.uleb128 0x18
+ 941 00d5 9742     		.uleb128 0x2117
+ 942 00d7 19       		.uleb128 0x19
+ 943 00d8 01       		.uleb128 0x1
+ 944 00d9 13       		.uleb128 0x13
+ 945 00da 00       		.byte	0
+ 946 00db 00       		.byte	0
+ 947 00dc 10       		.uleb128 0x10
+ 948 00dd 34       		.uleb128 0x34
+ 949 00de 00       		.byte	0
+ 950 00df 03       		.uleb128 0x3
+ 951 00e0 0E       		.uleb128 0xe
+ 952 00e1 3A       		.uleb128 0x3a
+ 953 00e2 0B       		.uleb128 0xb
+ 954 00e3 3B       		.uleb128 0x3b
+ 955 00e4 0B       		.uleb128 0xb
+ 956 00e5 49       		.uleb128 0x49
+ 957 00e6 13       		.uleb128 0x13
+ 958 00e7 3F       		.uleb128 0x3f
+ 959 00e8 19       		.uleb128 0x19
+ 960 00e9 3C       		.uleb128 0x3c
+ 961 00ea 19       		.uleb128 0x19
+ 962 00eb 00       		.byte	0
+ 963 00ec 00       		.byte	0
+ 964 00ed 11       		.uleb128 0x11
+ 965 00ee 34       		.uleb128 0x34
+ 966 00ef 00       		.byte	0
+ 967 00f0 03       		.uleb128 0x3
+ 968 00f1 0E       		.uleb128 0xe
+ 969 00f2 3A       		.uleb128 0x3a
+ 970 00f3 0B       		.uleb128 0xb
+ 971 00f4 3B       		.uleb128 0x3b
+ 972 00f5 05       		.uleb128 0x5
+ 973 00f6 49       		.uleb128 0x49
+ 974 00f7 13       		.uleb128 0x13
+ 975 00f8 3F       		.uleb128 0x3f
+ 976 00f9 19       		.uleb128 0x19
+ 977 00fa 3C       		.uleb128 0x3c
+ 978 00fb 19       		.uleb128 0x19
+ 979 00fc 00       		.byte	0
+ 980 00fd 00       		.byte	0
+ 981 00fe 12       		.uleb128 0x12
+ 982 00ff 35       		.uleb128 0x35
+ 983 0100 00       		.byte	0
+ 984 0101 49       		.uleb128 0x49
+ 985 0102 13       		.uleb128 0x13
+ 986 0103 00       		.byte	0
+ 987 0104 00       		.byte	0
+ 988 0105 13       		.uleb128 0x13
+ 989 0106 01       		.uleb128 0x1
+ 990 0107 01       		.byte	0x1
+ 991 0108 49       		.uleb128 0x49
+ 992 0109 13       		.uleb128 0x13
+ 993 010a 01       		.uleb128 0x1
+ 994 010b 13       		.uleb128 0x13
+ARM GAS  C:\Users\acer\AppData\Local\Temp\cclHZkaZ.s 			page 20
+
+
+ 995 010c 00       		.byte	0
+ 996 010d 00       		.byte	0
+ 997 010e 14       		.uleb128 0x14
+ 998 010f 21       		.uleb128 0x21
+ 999 0110 00       		.byte	0
+ 1000 0111 49       		.uleb128 0x49
+ 1001 0112 13       		.uleb128 0x13
+ 1002 0113 2F       		.uleb128 0x2f
+ 1003 0114 0B       		.uleb128 0xb
+ 1004 0115 00       		.byte	0
+ 1005 0116 00       		.byte	0
+ 1006 0117 15       		.uleb128 0x15
+ 1007 0118 26       		.uleb128 0x26
+ 1008 0119 00       		.byte	0
+ 1009 011a 49       		.uleb128 0x49
+ 1010 011b 13       		.uleb128 0x13
+ 1011 011c 00       		.byte	0
+ 1012 011d 00       		.byte	0
+ 1013 011e 16       		.uleb128 0x16
+ 1014 011f 34       		.uleb128 0x34
+ 1015 0120 00       		.byte	0
+ 1016 0121 03       		.uleb128 0x3
+ 1017 0122 0E       		.uleb128 0xe
+ 1018 0123 3A       		.uleb128 0x3a
+ 1019 0124 0B       		.uleb128 0xb
+ 1020 0125 3B       		.uleb128 0x3b
+ 1021 0126 0B       		.uleb128 0xb
+ 1022 0127 49       		.uleb128 0x49
+ 1023 0128 13       		.uleb128 0x13
+ 1024 0129 3F       		.uleb128 0x3f
+ 1025 012a 19       		.uleb128 0x19
+ 1026 012b 02       		.uleb128 0x2
+ 1027 012c 18       		.uleb128 0x18
+ 1028 012d 00       		.byte	0
+ 1029 012e 00       		.byte	0
+ 1030 012f 17       		.uleb128 0x17
+ 1031 0130 2E       		.uleb128 0x2e
+ 1032 0131 00       		.byte	0
+ 1033 0132 3F       		.uleb128 0x3f
+ 1034 0133 19       		.uleb128 0x19
+ 1035 0134 3C       		.uleb128 0x3c
+ 1036 0135 19       		.uleb128 0x19
+ 1037 0136 6E       		.uleb128 0x6e
+ 1038 0137 0E       		.uleb128 0xe
+ 1039 0138 03       		.uleb128 0x3
+ 1040 0139 0E       		.uleb128 0xe
+ 1041 013a 3A       		.uleb128 0x3a
+ 1042 013b 0B       		.uleb128 0xb
+ 1043 013c 3B       		.uleb128 0x3b
+ 1044 013d 0B       		.uleb128 0xb
+ 1045 013e 00       		.byte	0
+ 1046 013f 00       		.byte	0
+ 1047 0140 00       		.byte	0
+ 1048              		.section	.debug_loc,"",%progbits
+ 1049              	.Ldebug_loc0:
+ 1050              	.LLST0:
+ 1051 0000 14000000 		.4byte	.LVL0
+ARM GAS  C:\Users\acer\AppData\Local\Temp\cclHZkaZ.s 			page 21
+
+
+ 1052 0004 1A000000 		.4byte	.LVL3
+ 1053 0008 0800     		.2byte	0x8
+ 1054 000a 71       		.byte	0x71
+ 1055 000b 00       		.sleb128 0
+ 1056 000c 94       		.byte	0x94
+ 1057 000d 01       		.byte	0x1
+ 1058 000e 08       		.byte	0x8
+ 1059 000f FF       		.byte	0xff
+ 1060 0010 1A       		.byte	0x1a
+ 1061 0011 9F       		.byte	0x9f
+ 1062 0012 1A000000 		.4byte	.LVL3
+ 1063 0016 1C000000 		.4byte	.LVL4
+ 1064 001a 0B00     		.2byte	0xb
+ 1065 001c 74       		.byte	0x74
+ 1066 001d 00       		.sleb128 0
+ 1067 001e 70       		.byte	0x70
+ 1068 001f 00       		.sleb128 0
+ 1069 0020 22       		.byte	0x22
+ 1070 0021 94       		.byte	0x94
+ 1071 0022 01       		.byte	0x1
+ 1072 0023 08       		.byte	0x8
+ 1073 0024 FF       		.byte	0xff
+ 1074 0025 1A       		.byte	0x1a
+ 1075 0026 9F       		.byte	0x9f
+ 1076 0027 1C000000 		.4byte	.LVL4
+ 1077 002b 1F000000 		.4byte	.LVL5-1
+ 1078 002f 0100     		.2byte	0x1
+ 1079 0031 50       		.byte	0x50
+ 1080 0032 00000000 		.4byte	0
+ 1081 0036 00000000 		.4byte	0
+ 1082              	.LLST1:
+ 1083 003a 14000000 		.4byte	.LVL0
+ 1084 003e 1A000000 		.4byte	.LVL3
+ 1085 0042 0800     		.2byte	0x8
+ 1086 0044 71       		.byte	0x71
+ 1087 0045 01       		.sleb128 1
+ 1088 0046 94       		.byte	0x94
+ 1089 0047 01       		.byte	0x1
+ 1090 0048 08       		.byte	0x8
+ 1091 0049 FF       		.byte	0xff
+ 1092 004a 1A       		.byte	0x1a
+ 1093 004b 9F       		.byte	0x9f
+ 1094 004c 1A000000 		.4byte	.LVL3
+ 1095 0050 1F000000 		.4byte	.LVL5-1
+ 1096 0054 0100     		.2byte	0x1
+ 1097 0056 51       		.byte	0x51
+ 1098 0057 00000000 		.4byte	0
+ 1099 005b 00000000 		.4byte	0
+ 1100              	.LLST2:
+ 1101 005f 14000000 		.4byte	.LVL0
+ 1102 0063 18000000 		.4byte	.LVL2
+ 1103 0067 0800     		.2byte	0x8
+ 1104 0069 71       		.byte	0x71
+ 1105 006a 02       		.sleb128 2
+ 1106 006b 94       		.byte	0x94
+ 1107 006c 01       		.byte	0x1
+ 1108 006d 08       		.byte	0x8
+ARM GAS  C:\Users\acer\AppData\Local\Temp\cclHZkaZ.s 			page 22
+
+
+ 1109 006e FF       		.byte	0xff
+ 1110 006f 1A       		.byte	0x1a
+ 1111 0070 9F       		.byte	0x9f
+ 1112 0071 18000000 		.4byte	.LVL2
+ 1113 0075 1F000000 		.4byte	.LVL5-1
+ 1114 0079 0100     		.2byte	0x1
+ 1115 007b 52       		.byte	0x52
+ 1116 007c 00000000 		.4byte	0
+ 1117 0080 00000000 		.4byte	0
+ 1118              	.LLST3:
+ 1119 0084 16000000 		.4byte	.LVL1
+ 1120 0088 30000000 		.4byte	.LVL7
+ 1121 008c 0700     		.2byte	0x7
+ 1122 008e 75       		.byte	0x75
+ 1123 008f 00       		.sleb128 0
+ 1124 0090 0A       		.byte	0xa
+ 1125 0091 FFFF     		.2byte	0xffff
+ 1126 0093 1A       		.byte	0x1a
+ 1127 0094 9F       		.byte	0x9f
+ 1128 0095 00000000 		.4byte	0
+ 1129 0099 00000000 		.4byte	0
+ 1130              		.section	.debug_aranges,"",%progbits
+ 1131 0000 2C000000 		.4byte	0x2c
+ 1132 0004 0200     		.2byte	0x2
+ 1133 0006 00000000 		.4byte	.Ldebug_info0
+ 1134 000a 04       		.byte	0x4
+ 1135 000b 00       		.byte	0
+ 1136 000c 0000     		.2byte	0
+ 1137 000e 0000     		.2byte	0
+ 1138 0010 00000000 		.4byte	.LFB111
+ 1139 0014 40000000 		.4byte	.LFE111-.LFB111
+ 1140 0018 00000000 		.4byte	.LFB112
+ 1141 001c 94000000 		.4byte	.LFE112-.LFB112
+ 1142 0020 00000000 		.4byte	.LFB113
+ 1143 0024 10000000 		.4byte	.LFE113-.LFB113
+ 1144 0028 00000000 		.4byte	0
+ 1145 002c 00000000 		.4byte	0
+ 1146              		.section	.debug_ranges,"",%progbits
+ 1147              	.Ldebug_ranges0:
+ 1148 0000 00000000 		.4byte	.LFB111
+ 1149 0004 40000000 		.4byte	.LFE111
+ 1150 0008 00000000 		.4byte	.LFB112
+ 1151 000c 94000000 		.4byte	.LFE112
+ 1152 0010 00000000 		.4byte	.LFB113
+ 1153 0014 10000000 		.4byte	.LFE113
+ 1154 0018 00000000 		.4byte	0
+ 1155 001c 00000000 		.4byte	0
+ 1156              		.section	.debug_line,"",%progbits
+ 1157              	.Ldebug_line0:
+ 1158 0000 CF020000 		.section	.debug_str,"MS",%progbits,1
+ 1158      02007E02 
+ 1158      00000201 
+ 1158      FB0E0D00 
+ 1158      01010101 
+ 1159              	.LASF40:
+ 1160 0000 45455F73 		.ascii	"EE_std_endcycle_next_tid\000"
+ 1160      74645F65 
+ARM GAS  C:\Users\acer\AppData\Local\Temp\cclHZkaZ.s 			page 23
+
+
+ 1160      6E646379 
+ 1160      636C655F 
+ 1160      6E657874 
+ 1161              	.LASF31:
+ 1162 0019 72656456 		.ascii	"redValue\000"
+ 1162      616C7565 
+ 1162      00
+ 1163              	.LASF3:
+ 1164 0022 5F5F7569 		.ascii	"__uint8_t\000"
+ 1164      6E74385F 
+ 1164      7400
+ 1165              	.LASF43:
+ 1166 002c 52475F67 		.ascii	"RG_glowtable_1\000"
+ 1166      6C6F7774 
+ 1166      61626C65 
+ 1166      5F3100
+ 1167              	.LASF36:
+ 1168 003b 73746174 		.ascii	"state\000"
+ 1168      6500
+ 1169              	.LASF26:
+ 1170 0041 696E7465 		.ascii	"intensity_green\000"
+ 1170      6E736974 
+ 1170      795F6772 
+ 1170      65656E00 
+ 1171              	.LASF6:
+ 1172 0051 5F5F696E 		.ascii	"__int32_t\000"
+ 1172      7433325F 
+ 1172      7400
+ 1173              	.LASF33:
+ 1174 005b 626C7565 		.ascii	"blueValue\000"
+ 1174      56616C75 
+ 1174      6500
+ 1175              	.LASF38:
+ 1176 0065 45455F6F 		.ascii	"EE_oo_IRQ_suspend_status\000"
+ 1176      6F5F4952 
+ 1176      515F7375 
+ 1176      7370656E 
+ 1176      645F7374 
+ 1177              	.LASF27:
+ 1178 007e 696E7465 		.ascii	"intensity_blue\000"
+ 1178      6E736974 
+ 1178      795F626C 
+ 1178      756500
+ 1179              	.LASF35:
+ 1180 008d 66616465 		.ascii	"fader\000"
+ 1180      7200
+ 1181              	.LASF24:
+ 1182 0093 45455F54 		.ascii	"EE_TID\000"
+ 1182      494400
+ 1183              	.LASF30:
+ 1184 009a 676C6F77 		.ascii	"glow\000"
+ 1184      00
+ 1185              	.LASF18:
+ 1186 009f 666C6F61 		.ascii	"float\000"
+ 1186      7400
+ 1187              	.LASF54:
+ 1188 00a5 736F7572 		.ascii	"source\\asw\\arcadian.c\000"
+ARM GAS  C:\Users\acer\AppData\Local\Temp\cclHZkaZ.s 			page 24
+
+
+ 1188      63655C61 
+ 1188      73775C61 
+ 1188      72636164 
+ 1188      69616E2E 
+ 1189              	.LASF10:
+ 1190 00bb 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1190      206C6F6E 
+ 1190      6720756E 
+ 1190      7369676E 
+ 1190      65642069 
+ 1191              	.LASF1:
+ 1192 00d2 756E7369 		.ascii	"unsigned char\000"
+ 1192      676E6564 
+ 1192      20636861 
+ 1192      7200
+ 1193              	.LASF53:
+ 1194 00e0 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 1194      43313120 
+ 1194      352E342E 
+ 1194      31203230 
+ 1194      31363036 
+ 1195 0113 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m3 -mthumb -g -O"
+ 1195      20726576 
+ 1195      6973696F 
+ 1195      6E203233 
+ 1195      37373135 
+ 1196 0146 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
+ 1196      66756E63 
+ 1196      74696F6E 
+ 1196      2D736563 
+ 1196      74696F6E 
+ 1197              	.LASF56:
+ 1198 016e 46756E63 		.ascii	"Functsk_arcadian\000"
+ 1198      74736B5F 
+ 1198      61726361 
+ 1198      6469616E 
+ 1198      00
+ 1199              	.LASF20:
+ 1200 017f 45455F49 		.ascii	"EE_INT32\000"
+ 1200      4E543332 
+ 1200      00
+ 1201              	.LASF8:
+ 1202 0188 6C6F6E67 		.ascii	"long unsigned int\000"
+ 1202      20756E73 
+ 1202      69676E65 
+ 1202      6420696E 
+ 1202      7400
+ 1203              	.LASF5:
+ 1204 019a 73686F72 		.ascii	"short unsigned int\000"
+ 1204      7420756E 
+ 1204      7369676E 
+ 1204      65642069 
+ 1204      6E7400
+ 1205              	.LASF37:
+ 1206 01ad 45455F6F 		.ascii	"EE_oo_IRQ_disable_count\000"
+ 1206      6F5F4952 
+ 1206      515F6469 
+ARM GAS  C:\Users\acer\AppData\Local\Temp\cclHZkaZ.s 			page 25
+
+
+ 1206      7361626C 
+ 1206      655F636F 
+ 1207              	.LASF49:
+ 1208 01c5 50574D5F 		.ascii	"PWM_Yellow_WriteCompare\000"
+ 1208      59656C6C 
+ 1208      6F775F57 
+ 1208      72697465 
+ 1208      436F6D70 
+ 1209              	.LASF42:
+ 1210 01dd 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 1210      52784275 
+ 1210      66666572 
+ 1210      00
+ 1211              	.LASF32:
+ 1212 01ea 67726565 		.ascii	"greenValue\000"
+ 1212      6E56616C 
+ 1212      756500
+ 1213              	.LASF46:
+ 1214 01f5 50574D5F 		.ascii	"PWM_Red_WriteCompare\000"
+ 1214      5265645F 
+ 1214      57726974 
+ 1214      65436F6D 
+ 1214      70617265 
+ 1215              	.LASF4:
+ 1216 020a 5F5F7569 		.ascii	"__uint16_t\000"
+ 1216      6E743136 
+ 1216      5F7400
+ 1217              	.LASF19:
+ 1218 0215 646F7562 		.ascii	"double\000"
+ 1218      6C6500
+ 1219              	.LASF47:
+ 1220 021c 50574D5F 		.ascii	"PWM_Green_WriteCompare\000"
+ 1220      47726565 
+ 1220      6E5F5772 
+ 1220      69746543 
+ 1220      6F6D7061 
+ 1221              	.LASF51:
+ 1222 0233 50574D5F 		.ascii	"PWM_Green_ReadCompare\000"
+ 1222      47726565 
+ 1222      6E5F5265 
+ 1222      6164436F 
+ 1222      6D706172 
+ 1223              	.LASF11:
+ 1224 0249 756E7369 		.ascii	"unsigned int\000"
+ 1224      676E6564 
+ 1224      20696E74 
+ 1224      00
+ 1225              	.LASF23:
+ 1226 0256 45455F46 		.ascii	"EE_FREG\000"
+ 1226      52454700 
+ 1227              	.LASF21:
+ 1228 025e 45455F55 		.ascii	"EE_UINT32\000"
+ 1228      494E5433 
+ 1228      3200
+ 1229              	.LASF14:
+ 1230 0268 63686172 		.ascii	"char\000"
+ 1230      00
+ARM GAS  C:\Users\acer\AppData\Local\Temp\cclHZkaZ.s 			page 26
+
+
+ 1231              	.LASF15:
+ 1232 026d 75696E74 		.ascii	"uint8_t\000"
+ 1232      385F7400 
+ 1233              	.LASF39:
+ 1234 0275 45455F41 		.ascii	"EE_ApplicationMode\000"
+ 1234      70706C69 
+ 1234      63617469 
+ 1234      6F6E4D6F 
+ 1234      646500
+ 1235              	.LASF50:
+ 1236 0288 50574D5F 		.ascii	"PWM_Yellow_ReadCompare\000"
+ 1236      59656C6C 
+ 1236      6F775F52 
+ 1236      65616443 
+ 1236      6F6D7061 
+ 1237              	.LASF17:
+ 1238 029f 696E7433 		.ascii	"int32_t\000"
+ 1238      325F7400 
+ 1239              	.LASF13:
+ 1240 02a7 73697A65 		.ascii	"sizetype\000"
+ 1240      74797065 
+ 1240      00
+ 1241              	.LASF44:
+ 1242 02b0 4C45445F 		.ascii	"LED_RGB_Set\000"
+ 1242      5247425F 
+ 1242      53657400 
+ 1243              	.LASF9:
+ 1244 02bc 6C6F6E67 		.ascii	"long long int\000"
+ 1244      206C6F6E 
+ 1244      6720696E 
+ 1244      7400
+ 1245              	.LASF48:
+ 1246 02ca 50574D5F 		.ascii	"PWM_Red_ReadCompare\000"
+ 1246      5265645F 
+ 1246      52656164 
+ 1246      436F6D70 
+ 1246      61726500 
+ 1247              	.LASF22:
+ 1248 02de 45455F55 		.ascii	"EE_UREG\000"
+ 1248      52454700 
+ 1249              	.LASF41:
+ 1250 02e6 45455F49 		.ascii	"EE_IRQ_nesting_level\000"
+ 1250      52515F6E 
+ 1250      65737469 
+ 1250      6E675F6C 
+ 1250      6576656C 
+ 1251              	.LASF25:
+ 1252 02fb 696E7465 		.ascii	"intensity_red\000"
+ 1252      6E736974 
+ 1252      795F7265 
+ 1252      6400
+ 1253              	.LASF2:
+ 1254 0309 73686F72 		.ascii	"short int\000"
+ 1254      7420696E 
+ 1254      7400
+ 1255              	.LASF16:
+ 1256 0313 75696E74 		.ascii	"uint16_t\000"
+ARM GAS  C:\Users\acer\AppData\Local\Temp\cclHZkaZ.s 			page 27
+
+
+ 1256      31365F74 
+ 1256      00
+ 1257              	.LASF28:
+ 1258 031c 74696D65 		.ascii	"timeInMS\000"
+ 1258      496E4D53 
+ 1258      00
+ 1259              	.LASF7:
+ 1260 0325 6C6F6E67 		.ascii	"long int\000"
+ 1260      20696E74 
+ 1260      00
+ 1261              	.LASF12:
+ 1262 032e 6C6F6E67 		.ascii	"long double\000"
+ 1262      20646F75 
+ 1262      626C6500 
+ 1263              	.LASF0:
+ 1264 033a 7369676E 		.ascii	"signed char\000"
+ 1264      65642063 
+ 1264      68617200 
+ 1265              	.LASF52:
+ 1266 0346 45455F6F 		.ascii	"EE_oo_TerminateTask\000"
+ 1266      6F5F5465 
+ 1266      726D696E 
+ 1266      61746554 
+ 1266      61736B00 
+ 1267              	.LASF55:
+ 1268 035a 433A5C53 		.ascii	"C:\\Sandbox\\AMA_EOS\\Lab1\\Lab1_Final\\Lab1\\React"
+ 1268      616E6462 
+ 1268      6F785C41 
+ 1268      4D415F45 
+ 1268      4F535C4C 
+ 1269 0387 696F6E47 		.ascii	"ionGame.cydsn\000"
+ 1269      616D652E 
+ 1269      63796473 
+ 1269      6E00
+ 1270              	.LASF29:
+ 1271 0395 52475F5F 		.ascii	"RG__Glow_t\000"
+ 1271      476C6F77 
+ 1271      5F7400
+ 1272              	.LASF45:
+ 1273 03a0 43794465 		.ascii	"CyDelay\000"
+ 1273      6C617900 
+ 1274              	.LASF34:
+ 1275 03a8 676C6F77 		.ascii	"glower\000"
+ 1275      657200
+ 1276              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran
